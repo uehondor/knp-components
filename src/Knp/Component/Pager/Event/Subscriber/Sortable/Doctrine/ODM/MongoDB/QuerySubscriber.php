@@ -13,7 +13,12 @@ class QuerySubscriber implements EventSubscriberInterface
         if ($event->target instanceof Query) {
             if (isset($_GET[$event->options['sortFieldParameterName']])) {
                 $field = $_GET[$event->options['sortFieldParameterName']];
-                $dir = strtolower($_GET[$event->options['sortDirectionParameterName']]) == 'asc' ? 1 : -1;
+
+                $dir = -1;
+                if (isset($_GET[$event->options['sortDirectionParameterName']])
+                    && strtolower($_GET[$event->options['sortDirectionParameterName']]) == 'asc') {
+                    $dir = 1;
+                }
 
                 if (isset($event->options['sortFieldWhitelist'])) {
                     if (!in_array($field, $event->options['sortFieldWhitelist'])) {
